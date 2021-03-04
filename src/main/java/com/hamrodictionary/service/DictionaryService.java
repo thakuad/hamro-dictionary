@@ -20,8 +20,8 @@ public class DictionaryService {
     }
 
     public ResponseEntity<?> save(DictionaryModel dictionaryModel){
-        var model = new DictionaryModel();
-        var isWordExist = isWordExist(dictionaryModel.getEnglishWord(), dictionaryModel.getNepaliWord());
+        DictionaryModel model = new DictionaryModel();
+        boolean isWordExist = isWordExist(dictionaryModel.getEnglishWord(), dictionaryModel.getNepaliWord());
         if (!isWordExist){
             dictionaryModel.setCreatedDate(new Date());
             dictionaryModel.setLastUpdated(new Date());

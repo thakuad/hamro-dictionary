@@ -48,16 +48,16 @@ public class AuthenticationService {
 
     public ResponseEntity<?> registerUser(SignupRequest signupRequest) {
 
-        var isUserExist = isUserExist(signupRequest.getUsername(), signupRequest.getEmailAddress());
+        boolean isUserExist = isUserExist(signupRequest.getUsername(), signupRequest.getEmailAddress());
 
         if (isUserExist) {
             return ResponseEntity.badRequest().body("User Exist in the database");
         } else {
-            var isPasswordMatch = isPasswordMatch(signupRequest.getPassword(), signupRequest.getConfirmPassword());
+            boolean isPasswordMatch = isPasswordMatch(signupRequest.getPassword(), signupRequest.getConfirmPassword());
 
             if (isPasswordMatch) {
-                var password = encoder.encode(signupRequest.getPassword());
-                var user = new UserModel(signupRequest.getUsername(), signupRequest.getFirstName(), signupRequest.getLastName(), signupRequest.getEmailAddress(), password);
+                String password = encoder.encode(signupRequest.getPassword());
+                UserModel user = new UserModel(signupRequest.getUsername(), signupRequest.getFirstName(), signupRequest.getLastName(), signupRequest.getEmailAddress(), password);
 
                 return saveUserInDb(signupRequest, user);
 
@@ -100,7 +100,7 @@ public class AuthenticationService {
                 roles.add(roleModel);
                 user.setRoles(roles);
             } else {
-                var roleM = new RoleModel();
+                RoleModel roleM = new RoleModel();
                 roleM.setName(ERole.ROLE_USER);
                 roles.add(roleM);
                 user.setRoles(roles);
