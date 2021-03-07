@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
+import java.util.*;
 
 @Service
 public class DictionaryService {
@@ -20,7 +20,7 @@ public class DictionaryService {
     }
 
     public ResponseEntity<?> save(DictionaryModel dictionaryModel){
-        DictionaryModel model = new DictionaryModel();
+        DictionaryModel model;
         boolean isWordExist = isWordExist(dictionaryModel.getEnglishWord(), dictionaryModel.getNepaliWord());
         if (!isWordExist){
             dictionaryModel.setCreatedDate(new Date());
@@ -46,11 +46,26 @@ public class DictionaryService {
         return dictionaryRepository.save(dictionaryModel);
     }
 
-
-
-
     public ResponseEntity<?> delete(DictionaryModel dictionaryModel){
          dictionaryRepository.delete(dictionaryModel);
          return ResponseEntity.ok(new MessageResponse("The word is deleted successfully"));
+    }
+
+    public ResponseEntity<?> listOfAllWord(){
+        List<?> all = dictionaryRepository.findAll();
+        return ResponseEntity.ok(all);
+    }
+    public ResponseEntity<?> findByWord(String word){
+        Optional<?> wordReturn = dictionaryRepository.findByEnglishWord(word);
+
+        if (wordReturn.isPresent()){
+            return ResponseEntity.ok(wordReturn);
+        }else {
+            HashMap<String,String> badRequest = new HashMap<>();
+            badRequest.put("word", word);
+            badRequest.put("error", HttpStatus.NOT_FOUND.toString());
+            return ResponseEntity.badRequest().body(badRequest);
+        }
+
     }
 }
