@@ -79,7 +79,7 @@ public class AuthenticationService {
 
         List<String> roles = userService.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 
-        logger.info("The user: " + loginRequest.getUsername() + "successfully sign in into his account at: " + new Date());
+        logger.info("The user: " + loginRequest.getUsername() + " successfully sign in into his account at: " + new Date());
 
         return ResponseEntity.ok(new JwtResponse(jwt, userService.getId(), userService.getUsername(), userService.getEmail(), roles));
     }

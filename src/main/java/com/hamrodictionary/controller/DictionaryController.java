@@ -12,15 +12,15 @@ import javax.validation.Valid;
 @RequestMapping("/api/hd")
 public class DictionaryController {
 
-    String USER_ROLE = "ROLE_USER";
+
     private final DictionaryService dictionaryService;
 
     public DictionaryController(DictionaryService dictionaryService) {
         this.dictionaryService = dictionaryService;
     }
 
-    @PostMapping("/save")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PostMapping(value = "/save")
+    @PreAuthorize(value = "hasRole('ROLE_USER')")
     public ResponseEntity<?> saveValue(@Valid @RequestBody DictionaryModel dictionaryModel){
         return dictionaryService.save(dictionaryModel);
     }
